@@ -1,0 +1,82 @@
+<%- include('partials/header', { title: 'Admin Dashboard' }) %>
+
+<h2>Admin Dashboard - Manage Users, Properties, and Bookings</h2>
+
+<section>
+  <h3>Users</h3>
+  <ul id="userList"></ul>
+</section>
+
+<section>
+  <h3>Properties</h3>
+  <ul id="propertyList"></ul>
+</section>
+
+<section>
+  <h3>Bookings</h3>
+  <ul id="bookingList"></ul>
+</section>
+
+<script>
+  const token = localStorage.getItem('token');
+
+  async function fetchUsers() {
+    try {
+      const res = await axios.get('/api/admin/users', {
+        headers: { Authorization: 'Bearer ' + token }
+      });
+      const users = res.data;
+      const userList = document.getElementById('userList');
+      userList.innerHTML = '';
+      users.forEach(user => {
+        const li = document.createElement('li');
+        li.textContent = `${user.name} (${user.email}) - Role: ${user.role}`;
+        userList.appendChild(li);
+      });
+    } catch (err) {
+      alert('Failed to fetch users');
+    }
+  }
+
+  async function fetchProperties() {
+    try {
+      const res = await axios.get('/api/admin/properties', {
+        headers: { Authorization: 'Bearer ' + token }
+      });
+      const properties = res.data;
+      const propertyList = document.getElementById('propertyList');
+      propertyList.innerHTML = '';
+      properties.forEach(property => {
+        const li = document.createElement('li');
+        li.textContent = `${property.title} - ${property.type} - ₹${property.price}`;
+        propertyList.appendChild(li);
+      });
+    } catch (err) {
+      alert('Failed to fetch properties');
+    }
+  }
+
+  async function fetchBookings() {
+    try {
+      const res = await axios.get('/api/admin/bookings', {
+        headers: { Authorization: 'Bearer ' + token }
+      });
+      const bookings = res.data;
+      const bookingList = document.getElementById('bookingList');
+      bookingList.innerHTML = '';
+      bookings.forEach(booking => {
+        const li = document.createElement('li');
+        li.textContent = `User: ${booking.user.name}, Property: ${booking.property.title}, Status: ${booking.status}`;
+        bookingList.appendChild(li);
+      });
+    } catch (err) {
+      alert('Failed to fetch bookings');
+    }
+  }
+
+  fetchUsers();
+  fetchProperties();
+  fetchBookings();
+</script>
+
+<%- include('partials/footer') %>

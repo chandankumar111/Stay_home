@@ -1,0 +1,111 @@
+<%- include('partials/header', { title: 'Book Property' }) %>
+
+<h2>Book Property</h2>
+
+<div id="propertyDetails"></div>
+
+<form id="bookingForm">
+  <label for="startDate">Start Date:</label>
+  <input type="date" id="startDate" name="startDate" required />
+
+  <label for="endDate">End Date:</label>
+  <input type="date" id="endDate" name="endDate" required />
+
+  <button type="submit">Pay & Book</button>
+</form>
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+  const urlParams = new URLSearchParams(window.location.search);
+  const propertyId = urlParams.get('propertyId');
+  const propertyDetailsDiv = document.getElementById('propertyDetails');
+  const bookingForm = document.getElementById('bookingForm');
+
+  async function fetchProperty() {
+    try {
+      const response = await axios.get(`/api/properties/${propertyId}`);
+      const property = response.data;
+      propertyDetailsDiv.innerHTML = `
+        <h3>${property.title}</h3>
+        <p>${property.description}</p>
+        <p>Price: ₹${property.price}</p>
+      `;
+    } catch (error) {
+      alert('Failed to load property details');
+    }
+  }
+
+  bookingForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const startDate = bookingForm.startDate.value;
+    const endDate = bookingForm.endDate.value;
+
+    // Calculate amount (simple example: price * days)
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+    const days = Math.ceil((end - start) / (1000 * 60 * 60 * 24));
+    if (days <= 0) {
+      alert('End date must be after start date');
+      return;
+    }
+
+    try {
+      // Fetch property price
+      const propRes = await axios.get(`/api/properties/${propertyId}`);
+      const amount = propRes.data.price * days;
+
+      // Create booking and Razorpay order
+      const bookingRes = await axios.post('/api/bookings', {
+        propertyId,
+        startDate,
+        endDate,
+        amount
+      }, {
+        headers: { Authorization: 'Bearer ' + localStorage.getItem('token') }
+      });
+
+      const { order } = bookingRes.data;
+
+      const options = {
+        key: '<%= process.env.RAZORPAY_KEY_ID %>',
+        amount: order.amount,
+        currency: order.currency,
+        name: 'PG/Flat Booking',
+        description: 'Booking Payment',
+        order_id: order.id,
+        handler: async function (response) {
+          // Verify payment
+          try {
+            await axios.post('/api/bookings/verify', {
+              razorpay_order_id: response.razorpay_order_id,
+              razorpay_payment_id: response.razorpay_payment_id,
+              razorpay_signature: response.razorpay_signature
+            }, {
+              headers: { Authorization: 'Bearer ' + localStorage.getItem('token') }
+            });
+            alert('Payment successful and booking confirmed!');
+            window.location.href = '/';
+          } catch (err) {
+            alert('Payment verification failed');
+          }
+        },
+        prefill: {
+          email: '',
+          contact: ''
+        },
+        theme: {
+          color: '#3399cc'
+        }
+      };
+
+      const rzp = new Razorpay(options);
+      rzp.open();
+    } catch (error) {
+      alert('Booking failed: ' + (error.response?.data?.message || error.message));
+    }
+  });
+
+  fetchProperty();
+</script>
+
+<%- include('partials/footer') %>

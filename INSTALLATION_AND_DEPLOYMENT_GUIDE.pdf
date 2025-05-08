@@ -1,0 +1,247 @@
+%PDF-1.4
+%âãÏÓ
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [3 0 R] /Count 1 >>
+endobj
+3 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Contents 4 0 R /Resources << /Font << /F1 5 0 R >> >> >>
+endobj
+4 0 obj
+<< /Length 1234 >>
+stream
+BT
+/F1 18 Tf
+50 750 Td
+(PG/Flat Booking Website Installation and Deployment Guide) Tj
+ET
+BT
+/F1 12 Tf
+50 720 Td
+(1. Prerequisites:) Tj
+ET
+BT
+/F1 10 Tf
+50 700 Td
+(- Node.js and npm installed (v14 or higher recommended)) Tj
+ET
+BT
+/F1 10 Tf
+50 685 Td
+(- MongoDB installed and running locally or use MongoDB Atlas) Tj
+ET
+BT
+/F1 10 Tf
+50 670 Td
+(- Razorpay account with API keys) Tj
+ET
+BT
+/F1 10 Tf
+50 655 Td
+(- Mapbox account with access token) Tj
+ET
+BT
+/F1 12 Tf
+50 630 Td
+(2. Installation Steps:) Tj
+ET
+BT
+/F1 10 Tf
+50 610 Td
+(a) Clone the repository: git clone <repository_url> ) Tj
+ET
+BT
+/F1 10 Tf
+50 595 Td
+(b) Navigate to backend directory: cd backend ) Tj
+ET
+BT
+/F1 10 Tf
+50 580 Td
+(c) Install backend dependencies: npm install ) Tj
+ET
+BT
+/F1 10 Tf
+50 565 Td
+(d) Create .env file in backend with the following variables: ) Tj
+ET
+BT
+/F1 10 Tf
+50 550 Td
+(    PORT=5001) Tj
+ET
+BT
+/F1 10 Tf
+50 535 Td
+(    MONGO_URI=mongodb://localhost:27017/pgflatbooking) Tj
+ET
+BT
+/F1 10 Tf
+50 520 Td
+(    JWT_SECRET=your_jwt_secret_key) Tj
+ET
+BT
+/F1 10 Tf
+50 505 Td
+(    RAZORPAY_KEY_ID=your_razorpay_key_id) Tj
+ET
+BT
+/F1 10 Tf
+50 490 Td
+(    RAZORPAY_KEY_SECRET=your_razorpay_key_secret) Tj
+ET
+BT
+/F1 10 Tf
+50 475 Td
+(    MAPBOX_ACCESS_TOKEN=your_mapbox_access_token) Tj
+ET
+BT
+/F1 10 Tf
+50 460 Td
+(e) Start MongoDB server if running locally ) Tj
+ET
+BT
+/F1 10 Tf
+50 445 Td
+(f) Start backend server: npm run dev ) Tj
+ET
+BT
+/F1 12 Tf
+50 420 Td
+(g) Navigate to frontend directory: cd ../frontend ) Tj
+ET
+BT
+/F1 10 Tf
+50 405 Td
+(h) Install frontend dependencies: npm install ) Tj
+ET
+BT
+/F1 10 Tf
+50 390 Td
+(i) Create .env file in frontend with: REACT_APP_BACKEND_URL=http://localhost:5001 ) Tj
+ET
+BT
+/F1 10 Tf
+50 375 Td
+(j) Start frontend server: npm start ) Tj
+ET
+BT
+/F1 12 Tf
+50 350 Td
+(3. Deployment Instructions:) Tj
+ET
+BT
+/F1 10 Tf
+50 335 Td
+(- Use services like Heroku, Vercel, or DigitalOcean for deployment) Tj
+ET
+BT
+/F1 10 Tf
+50 320 Td
+(- Set environment variables on the hosting platform) Tj
+ET
+BT
+/F1 10 Tf
+50 305 Td
+(- Use MongoDB Atlas for production database) Tj
+ET
+BT
+/F1 10 Tf
+50 290 Td
+(- Configure domain and SSL certificates) Tj
+ET
+BT
+/F1 10 Tf
+50 275 Td
+(- Deploy backend and frontend separately or as a monorepo) Tj
+ET
+BT
+/F1 10 Tf
+50 260 Td
+(- Use process managers like PM2 for backend) Tj
+ET
+BT
+/F1 10 Tf
+50 245 Td
+(- Monitor logs and performance) Tj
+ET
+BT
+/F1 10 Tf
+50 230 Td
+(4. Marketing Tips:) Tj
+ET
+BT
+/F1 10 Tf
+50 215 Td
+(- Use social media platforms like Facebook, Instagram, Twitter) Tj
+ET
+BT
+/F1 10 Tf
+50 200 Td
+(- Use Google Ads and SEO techniques) Tj
+ET
+BT
+/F1 10 Tf
+50 185 Td
+(- Collaborate with local PG/flat owners for promotions) Tj
+ET
+BT
+/F1 10 Tf
+50 170 Td
+(- Offer referral discounts and promotions) Tj
+ET
+BT
+/F1 10 Tf
+50 155 Td
+(- Collect user feedback and improve continuously) Tj
+ET
+BT
+/F1 10 Tf
+50 140 Td
+(5. Support and Maintenance:) Tj
+ET
+BT
+/F1 10 Tf
+50 125 Td
+(- Regularly update dependencies and fix bugs) Tj
+ET
+BT
+/F1 10 Tf
+50 110 Td
+(- Backup database regularly) Tj
+ET
+BT
+/F1 10 Tf
+50 95 Td
+(- Provide user support channels) Tj
+ET
+BT
+/F1 10 Tf
+50 80 Td
+(- Monitor security and patch vulnerabilities) Tj
+ET
+BT
+/F1 10 Tf
+50 65 Td
+(Thank you for using the PG/Flat Booking Website!) Tj
+ET
+endstream
+endobj
+5 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>
+endobj
+xref
+0 6
+0000000000 65535 f 
+0000000010 00000 n 
+0000000060 00000 n 
+0000000117 00000 n 
+0000001360 00000 n 
+0000001470 00000 n 
+trailer
+<< /Size 6 /Root 1 0 R >>
+startxref
+1570
+%%EOF

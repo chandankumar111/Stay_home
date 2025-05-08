@@ -1,0 +1,91 @@
+.home-container {
+  padding: 20px;
+  font-family: Arial, sans-serif;
+  background: linear-gradient(135deg, #f0f4f8, #d9e2ec);
+  min-height: calc(100vh - 120px); /* Adjust for header and footer */
+}
+
+.cards-row {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.property-card {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  width: 300px;
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: transform 0.2s ease;
+}
+
+.property-card:hover {
+  transform: translateY(-5px);
+}
+
+.property-card img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 6px;
+}
+
+.property-card h3 {
+  margin: 10px 0 5px 0;
+  font-weight: bold;
+  text-align: center;
+}
+
+.property-card p {
+  font-size: 0.9rem;
+  color: #555;
+  text-align: center;
+  flex-grow: 1;
+}
+
+.card-actions {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin-top: 10px;
+}
+
+.like-button {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #888;
+  transition: color 0.3s ease;
+}
+
+.like-button.liked {
+  color: #e63946;
+}
+
+.book-button {
+  background-color: #0077b6;
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.book-button:hover {
+  background-color: #023e8a;
+}
+
+@media (max-width: 960px) {
+  .cards-row {
+    flex-direction: column;
+    align-items: center;
+  }
+}

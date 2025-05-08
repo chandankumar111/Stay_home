@@ -1,0 +1,90 @@
+<%- include('partials/header', { title: 'Properties' }) %>
+
+<h2>Available Properties</h2>
+
+<div>
+  <label for="type">Type:</label>
+  <select id="type">
+    <option value="">All</option>
+    <option value="pg">PG</option>
+    <option value="flat">Flat</option>
+    <option value="room">Room</option>
+  </select>
+
+  <label for="minPrice">Min Price:</label>
+  <input type="number" id="minPrice" min="0" />
+
+  <label for="maxPrice">Max Price:</label>
+  <input type="number" id="maxPrice" min="0" />
+
+  <button id="searchBtn">Search</button>
+</div>
+
+<div id="map" style="width: 100%; height: 400px; margin-top: 20px;"></div>
+
+<ul id="propertyList"></ul>
+
+<script>
+  mapboxgl.accessToken = '<%= process.env.MAPBOX_ACCESS_TOKEN %>';
+
+  const map = new mapboxgl.Map({
+    container: 'map',
+    style: 'mapbox://styles/mapbox/streets-v11',
+    center: [77.209, 28.6139], // Default to Delhi coordinates
+    zoom: 10
+  });
+
+  const propertyList = document.getElementById('propertyList');
+  const searchBtn = document.getElementById('searchBtn');
+
+  async function fetchProperties() {
+    const type = document.getElementById('type').value;
+    const minPrice = document.getElementById('minPrice').value;
+    const maxPrice = document.getElementById('maxPrice').value;
+
+    // For demo, use fixed coordinates and radius
+    const lng = 77.209;
+    const lat = 28.6139;
+    const radius = 10; // km
+
+    let url = `/api/properties?lng=${lng}&lat=${lat}&radius=${radius}`;
+    if (type) url += `&type=${type}`;
+    if (minPrice) url += `&minPrice=${minPrice}`;
+    if (maxPrice) url += `&maxPrice=${maxPrice}`;
+
+    try {
+      const response = await axios.get(url);
+      const properties = response.data;
+
+      // Clear map markers and list
+      propertyList.innerHTML = '';
+      if (window.markers) {
+        window.markers.forEach(marker => marker.remove());
+      }
+      window.markers = [];
+
+      properties.forEach(property => {
+        // Add marker to map
+        const marker = new mapboxgl.Marker()
+          .setLngLat(property.location.coordinates)
+          .setPopup(new mapboxgl.Popup().setHTML(`<h3>${property.title}</h3><p>${property.address}</p><p>Price: ₹${property.price}</p>`))
+          .addTo(map);
+        window.markers.push(marker);
+
+        // Add to list
+        const li = document.createElement('li');
+        li.innerHTML = `<strong>${property.title}</strong> - ${property.type} - ₹${property.price} <br/> ${property.address}`;
+        propertyList.appendChild(li);
+      });
+    } catch (error) {
+      alert('Failed to fetch properties');
+    }
+  }
+
+  searchBtn.addEventListener('click', fetchProperties);
+
+  // Initial fetch
+  fetchProperties();
+</script>
+
+<%- include('partials/footer') %>

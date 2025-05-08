@@ -1,0 +1,44 @@
+.navbar {
+  background-color: #4CAF50;
+  padding: 10px 20px;
+  color: white;
+}
+
+.navbar-list {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+}
+
+.navbar-list li {
+  margin-right: 20px;
+}
+
+.navbar-link {
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.navbar-link:hover {
+  text-decoration: underline;
+}
+
+.navbar-welcome {
+  font-style: italic;
+}
+
+.navbar-logout-button {
+  background-color: #f44336;
+  border: none;
+  color: white;
+  padding: 6px 12px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.navbar-logout-button:hover {
+  background-color: #d32f2f;
+}
