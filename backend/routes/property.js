@@ -17,8 +17,8 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
-// Public route to get all properties
-router.get('/', propertyController.getProperties);
+// Protected route to get all properties
+router.get('/', authenticateJWT, propertyController.getProperties);
 
 // Public route to get property by ID
 router.get('/:id', propertyController.getPropertyById);

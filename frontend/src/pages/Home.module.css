@@ -1,0 +1,63 @@
+.containerSpacing {
+  margin-top: 2rem;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.cardCustom {
+  transition: box-shadow 0.3s ease-in-out, transform 0.3s ease-in-out;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  cursor: pointer;
+  background-color: #121212;
+  color: #e0e0e0;
+}
+
+.cardCustom:hover {
+  box-shadow:
+    0 0 8px #00fff7,
+    0 0 16px #00fff7,
+    0 0 24px #00fff7,
+    0 0 32px #00fff7;
+  transform: translateY(-5px);
+}
+
+.cardTitle {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 700;
+  font-size: 1.25rem;
+  color: #00fff7;
+  margin-bottom: 0.5rem;
+}
+
+.cardDescription {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 0.9rem;
+  color: #b0b0b0;
+  margin-bottom: 1rem;
+  flex-grow: 1;
+}
+
+.cardDetails {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 0.9rem;
+  color: #ccc;
+}
+
+.cardPrice {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: #00fff7;
+}
+
+.cardImage {
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+  height: 180px;
+  object-fit: cover;
+}
+
+.rowGap {
+  row-gap: 1rem;
+  column-gap: 1rem;
+}

@@ -6,12 +6,13 @@ const express = require('express');
 const cors = require('cors');
 const path = require('path');
 
-// CORS configuration to allow specific origin and credentials
+
+// CORS configuration to allow all origins for testing
 const corsOptions = {
-  origin: 'http://localhost:3000', // React frontend default port
+  origin: '*', // Allow all origins temporarily for testing
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
-  credentials: true,
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
+  credentials: false,
   optionsSuccessStatus: 200
 };
 const morgan = require('morgan');
@@ -28,34 +29,28 @@ connectDB();
 
 const app = express();
 const server = http.createServer(app);
-const io = new Server(server, {
-  cors: {
-    origin: 'http://localhost:3000',
-    methods: ['GET', 'POST'],
-    credentials: true
-  }
-});
 
-// Middleware
+// Use CORS middleware with updated options as first middleware
 app.use(cors(corsOptions));
 app.options('*', cors(corsOptions)); // Enable pre-flight for all routes
 
-// Explicitly handle OPTIONS requests to respond with 204 No Content
-app.use((req, res, next) => {
-  if (req.method === 'OPTIONS') {
-    console.log('Received OPTIONS request for:', req.originalUrl);
-    res.sendStatus(204);
-  } else {
-    next();
+const io = new Server(server, {
+  cors: {
+    origin: corsOptions.origin,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    credentials: corsOptions.credentials
   }
 });
 
-// Logging middleware to log incoming requests and headers for debugging
+// Removed explicit OPTIONS handler middleware as cors handles it
+
+/* Logging middleware to log incoming requests and headers for debugging
 app.use((req, res, next) => {
   console.log(`Incoming request: ${req.method} ${req.originalUrl}`);
   console.log('Headers:', req.headers);
   next();
 });
+*/
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -97,6 +92,20 @@ app.get('/', (req, res) => {
   res.render('index', { title: 'PG/Flat Booking Home' });
 });
 
+// Debug route to list files in uploads folder
+const fs = require('fs');
+
+app.get('/debug/uploads', (req, res) => {
+  const uploadsDir = path.join(__dirname, 'uploads');
+  fs.readdir(uploadsDir, (err, files) => {
+    if (err) {
+      console.error('Error reading uploads directory:', err);
+      return res.status(500).json({ error: 'Failed to read uploads directory' });
+    }
+    res.json({ files });
+  });
+});
+
 // Properties listing page
 app.get('/properties', (req, res) => {
   res.render('properties', { title: 'Available Properties' });
@@ -123,7 +132,7 @@ app.use((err, req, res, next) => {
   res.status(500).json({ error: 'Something went wrong!' });
 });
 
-const PORT = process.env.PORT || 5001;
+const PORT = process.env.PORT || 5000;
 
 server.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);

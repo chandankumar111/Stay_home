@@ -30,16 +30,35 @@ exports.createProperty = async (req, res) => {
   }
 };
 
-// Get all properties with optional filters (e.g., location, price range)
 exports.getProperties = async (req, res) => {
   try {
     const filters = {};
-    // Add filters from query params if needed
-    const properties = await Property.find(filters).populate('owner', 'name email');
+    const { location, minPrice, maxPrice, type } = req.query;
+
+    if (location) {
+      filters['location.city'] = { $regex: location, $options: 'i' };
+    }
+
+    if (minPrice || maxPrice) {
+      filters.price = {};
+      if (minPrice) filters.price.$gte = Number(minPrice);
+      if (maxPrice) filters.price.$lte = Number(maxPrice);
+    }
+
+    if (type) {
+      filters.type = type;
+    }
+
+    // If user role is owner, filter properties by owner id
+    if (req.user.role === 'owner') {
+      filters.owner = req.user.id;
+    }
+
+    const properties = await Property.find(filters).populate('owner', 'name email username');
     res.json(properties);
   } catch (error) {
     console.error('Get properties error:', error);
-    res.status(500).json({ message: 'Server error' });
+    res.status(500).json({ message: 'Server error', error: error.message });
   }
 };
 
@@ -71,6 +90,9 @@ exports.updateProperty = async (req, res) => {
     // Handle uploaded photos
     if (req.files && req.files.length > 0) {
       req.body.photos = req.files.map(file => '/uploads/' + file.filename);
+    } else if (req.body.photos === undefined) {
+      // If photos field is undefined (removed all photos), set to empty array
+      req.body.photos = [];
     }
 
     // Parse location coordinates if sent as string
@@ -80,6 +102,12 @@ exports.updateProperty = async (req, res) => {
       } catch (e) {
         // ignore parse error
       }
+    } else if ((!req.body.location || Object.keys(req.body.location).length === 0) && req.body.latitude && req.body.longitude) {
+      // If location is missing but latitude and longitude are provided, construct location object
+      req.body.location = {
+        latitude: parseFloat(req.body.latitude),
+        longitude: parseFloat(req.body.longitude),
+      };
     }
 
     Object.assign(property, req.body);
@@ -101,7 +129,7 @@ exports.deleteProperty = async (req, res) => {
     if (property.owner.toString() !== req.user.id && req.user.role !== 'admin') {
       return res.status(403).json({ message: 'Unauthorized' });
     }
-    await property.remove();
+    await Property.findByIdAndDelete(req.params.id);
     res.json({ message: 'Property deleted' });
   } catch (error) {
     console.error('Delete property error:', error);

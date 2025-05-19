@@ -10,11 +10,17 @@ const Navbar = () => {
     localStorage.removeItem('user');
     navigate('/login');
   };
-
+  
   const user = JSON.parse(localStorage.getItem('user'));
 
   return (
     <nav className="navbar">
+      <div className="navbar-logo-container">
+        <Link to="/" className="navbar-logo-link">
+          <img src="/logo.png" alt="Stay_home Logo" className="navbar-logo-image" />
+          <div className="navbar-logo-text"><strong>Stay_home</strong></div>
+        </Link>
+      </div>
       <ul className="navbar-list">
         <li><Link to="/" className="navbar-link">Home</Link></li>
         {!user && <li><Link to="/login" className="navbar-link">Login</Link></li>}

@@ -18,6 +18,32 @@ const ListingForm = () => {
   const [error, setError] = useState('');
   const [isEditing, setIsEditing] = useState(false);
 
+  // Autofill location with user's exact current address on mount if not editing
+  useEffect(() => {
+    if (!id) {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(async (position) => {
+          const { latitude, longitude } = position.coords;
+          try {
+            const response = await fetch(
+              `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`
+            );
+            const data = await response.json();
+            const displayName = data.display_name || '';
+            setFormData((prev) => ({
+              ...prev,
+              location: displayName
+            }));
+          } catch (error) {
+            console.warn('Reverse geocoding error:', error);
+          }
+        }, (error) => {
+          console.warn('Geolocation error:', error);
+        });
+      }
+    }
+  }, [id]);
+
   useEffect(() => {
     if (id) {
       setIsEditing(true);
