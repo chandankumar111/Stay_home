@@ -31,6 +31,7 @@ const Navbar = () => {
         )}
         {user && (
           <>
+            <li><Link to="/messages" className="navbar-link">Messages</Link></li>
             <li>Welcome, {user.name}</li>
             <li><button onClick={handleLogout} className="navbar-logout-button">Logout</button></li>
           </>

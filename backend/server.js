@@ -69,23 +69,10 @@ app.use('/api/bookings', require('./routes/booking'));
 app.use('/api/chat', require('./routes/chat'));
 app.use('/api/payments', require('./routes/payment'));
 
+const socketHandler = require('./socketHandler');
+
 // Socket.io chat handling
-io.on('connection', (socket) => {
-  console.log('A user connected:', socket.id);
-
-  socket.on('joinRoom', (roomId) => {
-    socket.join(roomId);
-    console.log(`Socket ${socket.id} joined room ${roomId}`);
-  });
-
-  socket.on('chatMessage', ({ roomId, senderId, message }) => {
-    io.to(roomId).emit('chatMessage', { senderId, message, timestamp: new Date() });
-  });
-
-  socket.on('disconnect', () => {
-    console.log('User disconnected:', socket.id);
-  });
-});
+socketHandler(io);
 
 // Default route
 app.get('/', (req, res) => {

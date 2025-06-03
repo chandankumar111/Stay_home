@@ -11,6 +11,7 @@ import Booking from './pages/Booking';
 import Payment from './pages/Payment';
 import Chat from './pages/Chat';
 import ListingForm from './pages/ListingForm';
+import Messages from './pages/Messages';
 
 function App() {
   return (
@@ -19,7 +20,8 @@ function App() {
         <Navbar />
         <main>
           <Routes>
-            <Route path="/" element={<Home />} />
+            {/* <Route path="/" element={<Home />} /> */}
+            <Route path="/" element={<PropertyList />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/dashboard" element={<Home />} />
@@ -30,6 +32,7 @@ function App() {
             <Route path="/booking/:propertyId" element={<Booking />} />
             <Route path="/payment/:bookingId" element={<Payment />} />
             <Route path="/chat/:propertyId" element={<Chat />} />
+            <Route path="/messages" element={<Messages />} />
           </Routes>
         </main>
         <Footer />

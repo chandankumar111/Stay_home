@@ -2,7 +2,7 @@
  * Authentication controller: register and login logic
  */
 
-const User = require('../models/User');
+const User = require('../models/User.js');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { validationResult } = require('express-validator');
