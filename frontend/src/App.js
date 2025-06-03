@@ -12,6 +12,7 @@ import Payment from './pages/Payment';
 import Chat from './pages/Chat';
 import ListingForm from './pages/ListingForm';
 import Messages from './pages/Messages';
+import PrivateRoute from './components/PrivateRoute';
 
 function App() {
   return (
@@ -24,15 +25,64 @@ function App() {
             <Route path="/" element={<PropertyList />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
-            <Route path="/dashboard" element={<Home />} />
-            <Route path="/listing" element={<ListingForm />} />
-            <Route path="/edit-listing/:id" element={<ListingForm />} />
+            <Route
+              path="/dashboard"
+              element={
+                <PrivateRoute>
+                  <Home />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/listing"
+              element={
+                <PrivateRoute allowedRoles={['owner']}>
+                  <ListingForm />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/edit-listing/:id"
+              element={
+                <PrivateRoute allowedRoles={['owner']}>
+                  <ListingForm />
+                </PrivateRoute>
+              }
+            />
             {/* Other routes can be added here */}
             <Route path="/properties" element={<PropertyList />} />
-            <Route path="/booking/:propertyId" element={<Booking />} />
-            <Route path="/payment/:bookingId" element={<Payment />} />
-            <Route path="/chat/:propertyId" element={<Chat />} />
-            <Route path="/messages" element={<Messages />} />
+            <Route
+              path="/booking/:propertyId"
+              element={
+                <PrivateRoute>
+                  <Booking />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/payment/:bookingId"
+              element={
+                <PrivateRoute>
+                  <Payment />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/chat/:propertyId"
+              element={
+                <PrivateRoute>
+                  <Chat />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/messages"
+              element={
+                <PrivateRoute>
+                  <Messages />
+                </PrivateRoute>
+              }
+            />
           </Routes>
         </main>
         <Footer />
